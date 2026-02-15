@@ -140,15 +140,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # settings.py
 import os
 
-# Supabase Storage Configuration
 SUPABASE_URL = os.environ.get('SUPABASE_URL')
-SUPABASE_KEY = os.environ.get('SUPABASE_KEY', '')
+SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
 SUPABASE_BUCKET_NAME = 'car_images'
 
-DEFAULT_FILE_STORAGE = 'travelApp.storage.SupabaseStorage'  # Change 'fleet' to your app name!
+# CRITICAL: Use Supabase storage backend
+DEFAULT_FILE_STORAGE = 'travelApp.storage.SupabaseStorage'  # Change 'core' to your app name
 
-# Media URL now points to Supabase
+# Media URL points to Supabase
 MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/'
 
-MEDIA_ROOT = BASE_DIR / 'media'
 
