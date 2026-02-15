@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Chauffeur Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.19/dist/full.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff3600;
+            --secondary: #ffeae5;
+            --secondary2: #ffd8ce;
+            --bg-main: #ffffff;
+            --text-main: #000000;
+
+          }
+
+        /* CHANGED: More aggressive reset to eliminate ALL top spacing */
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100%;
+            overflow-x: hidden;
+            background: #000;
+            /* WHY: !important forces override of any default browser styles */
+            /* Background black so if any gap appears, it's black not white */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+
+        /* ADDED: Force hero to start at absolute top */
+        .hero {
+            position: relative;
+            top: 0;
+            margin-top: 0 !important;
+            /* WHY: Eliminates any potential margin collapse or spacing issues */
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .delay-100 { animation-delay: 0.1s; opacity: 0; }
+        .delay-200 { animation-delay: 0.2s; opacity: 0; }
+        .delay-300 { animation-delay: 0.3s; opacity: 0; }
+        .delay-400 { animation-delay: 0.4s; opacity: 0; }
+        .delay-500 { animation-delay: 0.5s; opacity: 0; }
+
+        .text-glow {
+            color: var(--primary); /* Optional: ensures the text matches the glow */
+            text-shadow: 0 0 40px rgba(255, 54, 0, 0.6),
+                         0 0 20px rgba(255, 54, 0, 0.4);
+        }
+
+        .hero-image {
+            background-image: url('https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=1471');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* ADDED: Ensure background extends to top edge */
+            background-attachment: scroll;
+            /* WHY: Ensures the background image stays in place and covers the entire viewport */
+        }
+
+        @media (max-width: 768px) {
+            .hero-image {
+                background-position: 65% center;
+            }
+        }
+
+        .glass-effect {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(96, 165, 250, 0.5);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        select.input-field option {
+            background: #1e293b;
+            color: white;
+        }
+
+        /* 1. Reset the container so it's invisible and doesn't blur anything */
+        /* ============================= */
+        /* FIXED TOP GLASS NAVBAR */
+        /* ============================= */
+
+        .navbar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+
+            /* Real glass strip */
+            background: rgba(255,255,255, 0.01);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            box-sizing: border-box; /* include padding in width */
+            overflow-x: hidden;     /* prevent horizontal scroll */
+            width: 100%;
+        }
+
+        /* Remove floating card effect */
+        .navbar-content {
+            max-width: 90rem;
+            margin: 0 auto; /* NO top margin */
+            padding: 1.1rem 2rem;
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: transparent; /* Important */
+            border: none;
+            border-radius: 0; /* Remove blob */
+            box-shadow: none; /* Remove floating shadow */
+            box-sizing: border-box; /* include padding in width */
+            overflow-x: hidden;     /* prevent horizontal scroll */
+        }
+
+
+        /* ============================= */
+        /* NAV LINKS */
+        /* ============================= */
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            box-sizing: border-box; /* include padding in width */
+            overflow-x: hidden;     /* prevent horizontal scroll */
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+
+        }
+
+
+        /* ============================= */
+        /* CALL BUTTON (ORANGE BRAND) */
+        /* ============================= */
+
+        .call-button {
+            background: var(--primary);
+            color: white;
+            padding: 0.65rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 54, 0, 0.35);
+        }
+
+        .call-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(255, 54, 0, 0.45);
+        }
+
+
+        /* ============================= */
+        /* LOGO */
+        /* ============================= */
+
+        .logo-text {
+            color: white;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .logo-icon {
+            color: var(--primary);
+        }
+
+
+        /* ============================= */
+        /* MOBILE */
+        /* ============================= */
+
+        @media (max-width: 768px) {
+
+            .navbar-content {
+                padding: 1rem 1.25rem;
+            }
+
+        }
+
+    </style>
+</head>
+<body>
+
+            <!-- Navigation Bar -->
+        <div class="navbar-container animate-fade-in ">
+
+
+            <nav class="navbar-content">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center gap-2">
+
+                        <!-- Logo Icon -->
+                        <svg class="w-8 h-8" style="color: var(--primary);" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.5 7c.276 0 .5.224.5.5v.511c0 .793-.926.989-1.616.989l-1.086-2h2.202zm-1.441 3.506c.639 1.186.946 2.252.946 3.666 0 1.37-.397 2.533-1.005 3.981v1.847c0 .552-.448 1-1 1h-1.5c-.552 0-1-.448-1-1v-1h-13v1c0 .552-.448 1-1 1h-1.5c-.552 0-1-.448-1-1v-1.847c-.608-1.448-1.005-2.611-1.005-3.981 0-1.414.307-2.48.946-3.666.829-1.537 1.851-3.453 2.93-5.252.828-1.382 1.262-1.707 2.278-1.889 1.532-.275 2.918-.365 4.851-.365s3.319.09 4.851.365c1.016.182 1.45.507 2.278 1.889 1.079 1.799 2.101 3.715 2.93 5.252zm-16.059 2.994c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5.672 1.5 1.5 1.5 1.5-.672 1.5-1.5zm10 1c0-.276-.224-.5-.5-.5h-7c-.276 0-.5.224-.5.5s.224.5.5.5h7c.276 0 .5-.224.5-.5zm2.941-5.527s-.74-1.826-1.631-3.142c-.202-.298-.515-.502-.869-.566-1.511-.272-2.835-.359-4.441-.359s-2.93.087-4.441.359c-.354.063-.667.267-.869.566-.891 1.315-1.631 3.142-1.631 3.142 1.64.313 4.309.497 6.941.497s5.301-.184 6.941-.497zm2.059 4.527c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5.672 1.5 1.5 1.5 1.5-.672 1.5-1.5zm-18.298-6.5h-2.202c-.276 0-.5.224-.5.5v.511c0 .793.926.989 1.616.989l1.086-2z"/>
+                        </svg>
+
+                        <!-- Logo Text -->
+                        <span class="text-xl font-bold hidden sm:block"
+                              style="color: var(--text-primary);">
+                            Apex Travels
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <div class="hidden lg:flex items-center gap-4">
+                    <a href="#" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About Us</a>
+                    <a href="fleet" class="nav-link">Our Fleet</a>
+                    <a href="#about" class="nav-link">Contact</a>
+                </div>
+
+                <!-- Call Now Button -->
+                <div class="flex items-center gap-4">
+                    <a href="tel:+9173008934"
+                       class="flex items-center gap-2 px-4 py-2 rounded-lg transition"
+                       style="background: var(--primary); color: white;">
+
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                            </path>
+                        </svg>
+
+                        <span class="hidden sm:inline">Call Now</span>
+                    </a>
+
+                    <!-- Mobile Menu Button -->
+                    <button class="lg:hidden"
+                            style="color: var(--text-main);"
+                            onclick="toggleMobileMenu()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4 6h16M4 12h16M4 18h16">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+
+            </nav>
+        </div>
+
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden lg:hidden mt-2 px-1.5">
+            <!-- CHANGED: From solid white to glass effect -->
+            <div class="rounded-xl shadow-lg p-4 max-w-7xl mx-auto"
+                 style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                <!-- WHY: Mobile menu should match the navbar's glass aesthetic -->
+
+                <!-- CHANGED: Border colors to work on glass background -->
+                <a href="#home" class="block nav-link py-3 border-b border-white/20">Home</a>
+                <a href="#about" class="block nav-link py-3 border-b border-white/20">About Us</a>
+                <a href="{% url 'travelApp:fleet' %}" class="block nav-link py-3 border-b border-white/20">Our Fleet</a>
+                <a href="#about" class="block nav-link py-3">Contact</a>
+                <!-- WHY: Gray borders won't show on glass, white borders at 20% opacity look clean -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+    </script>
+
+<div class="hero min-h-screen relative overflow-hidden hero-image">
+
+    <!-- Warm Brand Overlay -->
+    <div class="hero-overlay"
+         style="background: linear-gradient(to right, rgba(0,0,0,0.85), rgba(0,0,0,0.55), transparent);">
+    </div>
+
+    <div class="hero-overlay"
+         style="background: linear-gradient(to bottom, transparent, transparent, rgba(0,0,0,0.45));">
+    </div>
+
+    <div class="hero-content flex-col lg:flex-row w-full max-w-7xl z-10 px-6 py-12 lg:px-20 lg:py-20 justify-between items-center lg:items-start gap-8 lg:gap-12 pt-36 md:pt-40 lg:pt-44">
+
+        <!-- LEFT SIDE -->
+        <div class="lg:w-1/2 text-center lg:text-left flex flex-col items-center lg:items-start space-y-6 lg:space-y-8 relative -mt-16 transform scale-[0.92] origin-top"
+             style="color: white;">
+
+            <!-- Badge -->
+            <div class="flex items-center gap-3">
+                <span class="w-10 h-[2px] hidden lg:block"
+                      style="background: linear-gradient(to right, var(--primary), var(--secondary2));">
+                </span>
+                <span class="font-semibold tracking-[0.25em] uppercase text-xs"
+                      style="color: var(--secondary);">
+                    Premium Chauffeur Service
+                </span>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.1] tracking-tight">
+                ELEVATE <br>
+                <span style="color:white;">YOUR</span> <br>
+                <span class="italic"
+                      style="color: var(--primary); text-shadow: 0 0 25px rgba(255,54,0,0.35);">
+                    JOURNEY
+                </span>
+            </h1>
+
+            <p class="text-base md:text-lg max-w-lg font-medium leading-relaxed"
+               style="color: rgba(255,255,255,0.92);">
+                Exotic fleet. Professional drivers. Zero compromises.
+            </p>
+
+            <!-- CTA -->
+            <div class="flex flex-col sm:flex-row gap-4 pt-4">
+
+                <a href="{% url 'travelApp:fleet' %}">
+                    <button class="rounded-full px-10 py-4 font-bold transition-all duration-300 hover:scale-105"
+                            style="background: var(--primary); color: white; box-shadow: 0 15px 40px rgba(255,54,0,0.35);">
+                        View Fleet
+                    </button>
+                </a>
+
+                <a href="#about" >
+                    <button class="rounded-full px-10 py-4 font-bold transition-all duration-300 hover:scale-105"
+                            style="border: 2px solid var(--secondary2); color: white;">
+                        Contact Us
+                    </button>
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE: QUOTATION BOX -->
+        <div class="w-full lg:w-5/12 relative -mt-16 transform scale-[0.95] origin-top">
+
+            <div class="rounded-2xl p-6 lg:p-8 shadow-2xl"
+                 style="
+                    background: rgba(255,255,255,0.08);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid rgba(255,255,255,0.15);
+                 ">
+
+                <!-- Header -->
+                <div class="mb-6">
+                    <h3 class="text-2xl lg:text-3xl font-bold mb-2"
+                        style="color: white;">
+                        Get Your Quote
+                    </h3>
+                    <p class="text-sm"
+                       style="color: rgba(255,255,255,0.7);">
+                        Fill in the details and we'll get back to you instantly
+                    </p>
+                </div>
+
+                <form method="POST">
+
+                    <!-- INPUT STYLE -->
+                    <style>
+                        .input-field {
+                            background: rgba(255,255,255,0.08);
+                            border: 1px solid rgba(255,255,255,0.15);
+                            color: white;
+                            transition: 0.3s ease;
+                        }
+
+                        .input-field:focus {
+                            outline: none;
+                            border: 1px solid var(--primary);
+                            box-shadow: 0 0 0 3px rgba(255,54,0,0.2);
+                        }
+
+                        .input-field::placeholder {
+                            color: rgba(255,255,255,0.5);
+                        }
+                    </style>
+
+                    <!-- Pickup -->
+                    <div class="mb-4">
+                        <label class="text-sm block mb-2"
+                               style="color: var(--secondary);">
+                            Pickup Address
+                        </label>
+                        <input type="text" class="input-field w-full px-4 py-3 rounded-lg text-sm" placeholder="Enter pickup location" required>
+                    </div>
+
+                    <!-- Dropoff -->
+                    <div class="mb-4">
+                        <label class="text-sm block mb-2"
+                               style="color: var(--secondary);">
+                            Drop-off Address
+                        </label>
+                        <input type="text" class="input-field w-full px-4 py-3 rounded-lg text-sm" placeholder="Enter destination" required>
+                    </div>
+
+                    <!-- Grid -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+
+                        <div>
+                            <label class="text-sm block mb-2" style="color: var(--secondary);">
+                                Vehicle
+                            </label>
+                            <select class="input-field w-full px-4 py-3 rounded-lg text-sm" required>
+                                <option value="" disabled selected>Select vehicle</option>
+                                <option value="sedan">SUV & Sedan</option>
+                                <option value="suv">All Party Buses</option>
+                                <option value="luxury">Stretch Limos</option>
+                                <option value="van">Charter Buses</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="text-sm block mb-2"
+                                   style="color: var(--secondary);">
+                                Pickup Date
+                            </label>
+                            <input type="date" class="input-field w-full px-4 py-3 rounded-lg text-sm" required>
+                        </div>
+                    </div>
+
+                    <!-- Grid 2 (NEW) -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="text-sm block mb-2" style="color: var(--secondary);">
+                                Hours
+                            </label>
+                            <input type="number"
+                                   min="1"
+                                   placeholder="e.g. 4"
+                                   class="input-field w-full px-4 py-3 rounded-lg text-sm"
+                                   required>
+                        </div>
+
+                        <div>
+                            <label class="text-sm block mb-2"
+                                   style="color: var(--secondary);">
+                                Passengers
+                            </label>
+                            <input type="text" class="input-field w-full px-4 py-3 rounded-lg text-sm" required>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-4">
+                        <label class="text-sm block mb-2"
+                               style="color: var(--secondary);">
+                            Email
+                        </label>
+                        <input type="email" class="input-field w-full px-4 py-3 rounded-lg text-sm" required>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit"
+                            class="w-full font-bold py-4 rounded-full mt-4 transition-all duration-300 hover:scale-[1.02]"
+                            style="
+                                background: var(--primary);
+                                color: white;
+                                box-shadow: 0 15px 35px rgba(255,54,0,0.4);
+                            ">
+                        Get Instant Quote
+                    </button>
+
+                    <!-- Security Text -->
+                    <p class="text-xs text-center mt-4"
+                       style="color: rgba(255,255,255,0.6);">
+                        🔒 Your information is secure and confidential
+                    </p>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Fleet Services Section -->
+<section class="relative py-20 lg:py-32"
+         style="background: linear-gradient(to bottom, #0d0d0d, #000000);">
+
+    <!-- Section Header -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-20 mb-16 text-center">
+
+        <div class="flex items-center justify-center gap-4 mb-6">
+            <span class="w-14 h-[2px]"
+                  style="background: linear-gradient(to right, var(--primary), var(--secondary2));"></span>
+
+            <span class="font-semibold tracking-[0.25em] uppercase text-sm"
+                  style="color: var(--secondary);">
+                Our Premium Fleet
+            </span>
+
+            <span class="w-14 h-[2px]"
+                  style="background: linear-gradient(to right, var(--secondary2), var(--primary));"></span>
+        </div>
+
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
+            Choose Your
+            <span style="color: var(--primary); text-shadow: 0 0 25px rgba(255,54,0,0.35);">
+                Experience
+            </span>
+        </h2>
+
+        <p class="text-lg max-w-2xl mx-auto"
+           style="color: rgba(255,255,255,0.7);">
+            From executive sedans to extravagant party buses,
+            we deliver comfort, class and unforgettable arrivals.
+        </p>
+    </div>
+
+    <!-- Fleet Cards Grid -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- Card 1: Party Buses 10-20 -->
+            <div class="group rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.03]"
+                 style="
+                    background: rgba(255,255,255,0.05);
+                    backdrop-filter: blur(18px);
+                    border: 1px solid rgba(255,255,255,0.08);
+                 ">
+
+                <div class="relative h-56 overflow-hidden">
+                    <img src="/media/fleet/featured/Screenshot_2025-11-18_090345.png"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+
+                    <div class="absolute inset-0"
+                         style="background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);">
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold"
+                         style="background: var(--primary); color: white;">
+                        ★ 4.8
+                    </div>
+                </div>
+
+                <div class="p-6">
+
+                    <h3 class="text-2xl font-bold text-white mb-4">
+                        Amelia Party Bus
+                    </h3>
+
+                    <div class="flex items-center justify-between text-sm mb-6"
+                         style="color: rgba(255,255,255,0.7);">
+                        <span>35 Passengers</span>
+
+                    </div>
+
+                    <div class="flex gap-3">
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                                style="
+                                    background: var(--primary);
+                                    color: white;
+                                    box-shadow: 0 12px 30px rgba(255,54,0,0.35);
+                                ">
+                            Get Quote
+                        </button>
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300"
+                                style="
+                                    border: 1px solid rgba(255,255,255,0.2);
+                                    color: white;
+                                ">
+                            Call Now
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Card 2: Sprinter Limousines -->
+            <div class="group rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.03]"
+                 style="
+                    background: rgba(255,255,255,0.05);
+                    backdrop-filter: blur(18px);
+                    border: 1px solid rgba(255,255,255,0.08);
+                 ">
+
+                <div class="relative h-56 overflow-hidden">
+                    <img src="/media/fleet/featured/Screenshot_2025-11-18_090700.png"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+
+                    <div class="absolute inset-0"
+                         style="background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);">
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold"
+                         style="background: var(--primary); color: white;">
+                        ★ 4.8
+                    </div>
+                </div>
+
+                <div class="p-6">
+
+                    <h3 class="text-2xl font-bold text-white mb-4">
+                        Club On Wheels Party Bus
+                    </h3>
+
+                    <div class="flex items-center justify-between text-sm mb-6"
+                         style="color: rgba(255,255,255,0.7);">
+                        <span>45 Passengers</span>
+
+                    </div>
+
+                    <div class="flex gap-3">
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                                style="
+                                    background: var(--primary);
+                                    color: white;
+                                    box-shadow: 0 12px 30px rgba(255,54,0,0.35);
+                                ">
+                            Get Quote
+                        </button>
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300"
+                                style="
+                                    border: 1px solid rgba(255,255,255,0.2);
+                                    color: white;
+                                ">
+                            Call Now
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Card 3: Large Party Buses 20-30 -->
+            <div class="group rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.03]"
+                 style="
+                    background: rgba(255,255,255,0.05);
+                    backdrop-filter: blur(18px);
+                    border: 1px solid rgba(255,255,255,0.08);
+                 ">
+
+                <div class="relative h-56 overflow-hidden">
+                    <img src="/media/fleet/featured/Screenshot_2025-11-18_090017.png"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+
+                    <div class="absolute inset-0"
+                         style="background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);">
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold"
+                         style="background: var(--primary); color: white;">
+                        ★ 4.8
+                    </div>
+                </div>
+
+                <div class="p-6">
+
+                    <h3 class="text-2xl font-bold text-white mb-4">
+                        Limo Party Bus with Poles
+                    </h3>
+
+                    <div class="flex items-center justify-between text-sm mb-6"
+                         style="color: rgba(255,255,255,0.7);">
+                        <span>25 Passengers</span>
+
+                    </div>
+
+                    <div class="flex gap-3">
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                                style="
+                                    background: var(--primary);
+                                    color: white;
+                                    box-shadow: 0 12px 30px rgba(255,54,0,0.35);
+                                ">
+                            Get Quote
+                        </button>
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300"
+                                style="
+                                    border: 1px solid rgba(255,255,255,0.2);
+                                    color: white;
+                                ">
+                            Call Now
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Card 4: Extra Large Party Buses 30-40 -->
+            <div class="group rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.03]"
+                 style="
+                    background: rgba(255,255,255,0.05);
+                    backdrop-filter: blur(18px);
+                    border: 1px solid rgba(255,255,255,0.08);
+                 ">
+
+                <div class="relative h-56 overflow-hidden">
+                    <img src="/media/fleet/featured/Screenshot_2025-11-18_093533.png"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+
+                    <div class="absolute inset-0"
+                         style="background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);">
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold"
+                         style="background: var(--primary); color: white;">
+                        ★ 4.8
+                    </div>
+                </div>
+
+                <div class="p-6">
+
+                    <h3 class="text-2xl font-bold text-white mb-4">
+                        Limo Party Bus XL
+                    </h3>
+
+                    <div class="flex items-center justify-between text-sm mb-6"
+                         style="color: rgba(255,255,255,0.7);">
+                        <span>40 Passengers</span>
+
+                    </div>
+
+                    <div class="flex gap-3">
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                                style="
+                                    background: var(--primary);
+                                    color: white;
+                                    box-shadow: 0 12px 30px rgba(255,54,0,0.35);
+                                ">
+                            Get Quote
+                        </button>
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300"
+                                style="
+                                    border: 1px solid rgba(255,255,255,0.2);
+                                    color: white;
+                                ">
+                            Call Now
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Card 5: Mega Party Buses 40-60 -->
+            <div class="group rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.03]"
+                 style="
+                    background: rgba(255,255,255,0.05);
+                    backdrop-filter: blur(18px);
+                    border: 1px solid rgba(255,255,255,0.08);
+                 ">
+
+                <div class="relative h-56 overflow-hidden">
+                    <img src="/media/fleet/featured/Screenshot_2025-11-18_093645.png"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+
+                    <div class="absolute inset-0"
+                         style="background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);">
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold"
+                         style="background: var(--primary); color: white;">
+                        ★ 4.8
+                    </div>
+                </div>
+
+                <div class="p-6">
+
+                    <h3 class="text-2xl font-bold text-white mb-4">
+                        Party Bus Ford F-750 White
+                    </h3>
+
+                    <div class="flex items-center justify-between text-sm mb-6"
+                         style="color: rgba(255,255,255,0.7);">
+                        <span>50 Passengers</span>
+
+                    </div>
+
+                    <div class="flex gap-3">
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                                style="
+                                    background: var(--primary);
+                                    color: white;
+                                    box-shadow: 0 12px 30px rgba(255,54,0,0.35);
+                                ">
+                            Get Quote
+                        </button>
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300"
+                                style="
+                                    border: 1px solid rgba(255,255,255,0.2);
+                                    color: white;
+                                ">
+                            Call Now
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Card 6: Party Buses with Bathroom -->
+            <div class="group rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.03]"
+                 style="
+                    background: rgba(255,255,255,0.05);
+                    backdrop-filter: blur(18px);
+                    border: 1px solid rgba(255,255,255,0.08);
+                 ">
+
+                <div class="relative h-56 overflow-hidden">
+                    <img src="/media/fleet/featured/Screenshot_2025-11-18_091956.png"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+
+                    <div class="absolute inset-0"
+                         style="background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);">
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold"
+                         style="background: var(--primary); color: white;">
+                        ★ 4.8
+                    </div>
+                </div>
+
+                <div class="p-6">
+
+                    <h3 class="text-2xl font-bold text-white mb-4">
+                        White Night Party Bus
+                    </h3>
+
+                    <div class="flex items-center justify-between text-sm mb-6"
+                         style="color: rgba(255,255,255,0.7);">
+                        <span>30 Passengers</span>
+
+                    </div>
+
+                    <div class="flex gap-3">
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300 hover:scale-105"
+                                style="
+                                    background: var(--primary);
+                                    color: white;
+                                    box-shadow: 0 12px 30px rgba(255,54,0,0.35);
+                                ">
+                            Get Quote
+                        </button>
+
+                        <button class="flex-1 font-bold py-3 rounded-lg transition-all duration-300"
+                                style="
+                                    border: 1px solid rgba(255,255,255,0.2);
+                                    color: white;
+                                ">
+                            Call Now
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- View All Fleet Button -->
+        <div class="text-center mt-20">
+            <button class="font-bold py-4 px-14 rounded-full transition-all duration-300 hover:scale-105"
+                    style="
+                        background: var(--primary);
+                        color: white;
+                        box-shadow: 0 15px 40px rgba(255,54,0,0.4);
+                    ">
+                View Complete Fleet
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- About Us Section -->
+<section id="about"
+         class="relative py-20 lg:py-32"
+         style="background: linear-gradient(to bottom, #0d0d0d, #000000);">
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-20">
+
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <span class="w-14 h-[2px]"
+                      style="background: linear-gradient(to right, var(--primary), var(--secondary2));"></span>
+
+                <span class="font-semibold tracking-[0.25em] uppercase text-sm"
+                      style="color: var(--secondary);">
+                    About LuxeRide
+                </span>
+
+                <span class="w-14 h-[2px]"
+                      style="background: linear-gradient(to right, var(--secondary2), var(--primary));"></span>
+            </div>
+
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
+                Excellence in
+                <span style="color: var(--primary); text-shadow: 0 0 25px rgba(255,54,0,0.35);">
+                    Travel & Transportation
+                </span>
+            </h2>
+
+            <p class="text-lg max-w-3xl mx-auto"
+               style="color: rgba(255,255,255,0.75);">
+                We provide premium transportation designed for comfort,
+                reliability and unforgettable arrivals. Whether it’s airport transfers,
+                private rides or VIP events, every journey is delivered with precision.
+            </p>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="rounded-2xl p-10 mb-20 text-center"
+             style="
+                background: rgba(255,255,255,0.05);
+                backdrop-filter: blur(18px);
+                border: 1px solid rgba(255,255,255,0.08);
+             ">
+
+            <h3 class="text-2xl font-bold text-white mb-8">
+                Contact Information
+            </h3>
+
+            <div class="grid md:grid-cols-3 gap-8"
+                 style="color: rgba(255,255,255,0.8);">
+
+                <div>
+                    <p class="font-semibold mb-2"
+                       style="color: var(--primary);">
+                        Address
+                    </p>
+                    <p>929 Coney Island Avenue One<br>Brooklyn, New York</p>
+                </div>
+
+                <div>
+                    <p class="font-semibold mb-2"
+                       style="color: var(--primary);">
+                        Email
+                    </p>
+                    <a href="mailto:sales@apextourtravel.com"
+                       class="transition hover:opacity-80"
+                       style="color: white;">
+                        sales@apextourtravel.com
+                    </a>
+                </div>
+
+                <div>
+                    <p class="font-semibold mb-2"
+                       style="color: var(--primary);">
+                        Phone
+                    </p>
+                    <a href="tel:+19173008934"
+                       class="transition hover:opacity-80"
+                       style="color: white;">
+                        +1 (917) 300-8934
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="grid lg:grid-cols-2 gap-14 items-center mb-20">
+
+            <!-- Image -->
+            <div class="relative group rounded-2xl overflow-hidden shadow-2xl"
+                 style="
+                    border: 1px solid rgba(255,255,255,0.08);
+                 ">
+
+                <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?q=80&w=1471"
+                     alt="Luxury Transportation"
+                     class="w-full h-[420px] object-cover group-hover:scale-105 transition-transform duration-700">
+
+                <div class="absolute inset-0"
+                     style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+                </div>
+
+            </div>
+
+            <!-- Text -->
+            <div class="rounded-2xl p-10"
+                 style="
+                    background: rgba(255,255,255,0.05);
+                    backdrop-filter: blur(18px);
+                    border: 1px solid rgba(255,255,255,0.08);
+                 ">
+
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    Why Choose LuxeRide
+                </h3>
+
+                <ul class="space-y-4"
+                    style="color: rgba(255,255,255,0.8);">
+
+                    <li class="flex items-start gap-3">
+                        <span style="color: var(--primary);">✔</span>
+                        Professional and experienced chauffeurs
+                    </li>
+
+                    <li class="flex items-start gap-3">
+                        <span style="color: var(--primary);">✔</span>
+                        Reliable airport transfers & private rides
+                    </li>
+
+                    <li class="flex items-start gap-3">
+                        <span style="color: var(--primary);">✔</span>
+                        24/7 dedicated support
+                    </li>
+
+                    <li class="flex items-start gap-3">
+                        <span style="color: var(--primary);">✔</span>
+                        Fully licensed and insured service
+                    </li>
+
+                    <li class="flex items-start gap-3">
+                        <span style="color: var(--primary);">✔</span>
+                        Meticulously maintained luxury fleet
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+            <!-- STAT CARD -->
+            <div class="rounded-2xl p-8 text-center transition-all duration-500 hover:scale-105"
+                 style="
+                    background: rgba(255,255,255,0.05);
+                    border: 1px solid rgba(255,255,255,0.08);
+                 ">
+
+                <div class="text-4xl md:text-5xl font-black mb-3"
+                     style="color: var(--primary); text-shadow: 0 0 20px rgba(255,54,0,0.3);">
+                    5+
+                </div>
+
+                <div style="color: rgba(255,255,255,0.7);"
+                     class="font-medium">
+                    Years Experience
+                </div>
+            </div>
+
+            <div class="rounded-2xl p-8 text-center transition-all duration-500 hover:scale-105"
+                 style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+
+                <div class="text-4xl md:text-5xl font-black mb-3"
+                     style="color: var(--primary); text-shadow: 0 0 20px rgba(255,54,0,0.3);">
+                    50+
+                </div>
+
+                <div class="font-medium"
+                     style="color: rgba(255,255,255,0.7);">
+                    Vehicles
+                </div>
+            </div>
+
+            <div class="rounded-2xl p-8 text-center transition-all duration-500 hover:scale-105"
+                 style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+
+                <div class="text-4xl md:text-5xl font-black mb-3"
+                     style="color: var(--primary); text-shadow: 0 0 20px rgba(255,54,0,0.3);">
+                    10K+
+                </div>
+
+                <div class="font-medium"
+                     style="color: rgba(255,255,255,0.7);">
+                    Happy Clients
+                </div>
+            </div>
+
+            <div class="rounded-2xl p-8 text-center transition-all duration-500 hover:scale-105"
+                 style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+
+                <div class="text-4xl md:text-5xl font-black mb-3"
+                     style="color: var(--primary); text-shadow: 0 0 20px rgba(255,54,0,0.3);">
+                    4.9
+                </div>
+
+                <div class="font-medium"
+                     style="color: rgba(255,255,255,0.7);">
+                    Average Rating
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+
+</body>
+</html>

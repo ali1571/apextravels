@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/**
+  * A catch-all path to Django template files, JavaScript, and Python files
+  * that contain Tailwind CSS classes and will be scanned by Tailwind to generate the final CSS file.
+  *
+  * If your final CSS file is not being updated after code changes, you may want to broaden or narrow
+  * the scope of this path.
+  */
+@source "../../../**/*.{html,py,js}";
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3N0YXRpY19zcmMvc3JjL3N0eWxlcy5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEiLCJmaWxlIjoic3R5bGVzLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIkBpbXBvcnQgXCJ0YWlsd2luZGNzc1wiO1xuQHBsdWdpbiBcImRhaXN5dWlcIjtcblxuLyoqXG4gICogQSBjYXRjaC1hbGwgcGF0aCB0byBEamFuZ28gdGVtcGxhdGUgZmlsZXMsIEphdmFTY3JpcHQsIGFuZCBQeXRob24gZmlsZXNcbiAgKiB0aGF0IGNvbnRhaW4gVGFpbHdpbmQgQ1NTIGNsYXNzZXMgYW5kIHdpbGwgYmUgc2Nhbm5lZCBieSBUYWlsd2luZCB0byBnZW5lcmF0ZSB0aGUgZmluYWwgQ1NTIGZpbGUuXG4gICpcbiAgKiBJZiB5b3VyIGZpbmFsIENTUyBmaWxlIGlzIG5vdCBiZWluZyB1cGRhdGVkIGFmdGVyIGNvZGUgY2hhbmdlcywgeW91IG1heSB3YW50IHRvIGJyb2FkZW4gb3IgbmFycm93XG4gICogdGhlIHNjb3BlIG9mIHRoaXMgcGF0aC5cbiAgKi9cbkBzb3VyY2UgXCIuLi8uLi8uLi8qKi8qLntodG1sLHB5LGpzfVwiO1xuIl19 */
