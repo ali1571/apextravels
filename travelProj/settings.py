@@ -87,13 +87,14 @@ WSGI_APPLICATION = 'travelProj.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+'''
 # Override with PostgreSQL if DATABASE_URL is provided (Railway)
 import dj_database_url
 if 'DATABASE_URL' in os.environ:
@@ -160,6 +161,7 @@ DEFAULT_FILE_STORAGE = 'travelApp.storage.SupabaseStorage'  # Change 'core' to y
 
 # Media URL points to Supabase
 MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/'
+
 
 
 
