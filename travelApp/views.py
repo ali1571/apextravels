@@ -53,19 +53,28 @@ def home(request):
     return render(request, 'home.html')
 
 from .models import VehicleCategory
+
 def fleet(request):
     """Display all vehicle categories with their vehicles"""
+    print("===== FLEET VIEW CALLED =====")
+    
     categories = VehicleCategory.objects.prefetch_related(
         'vehicles__gallery_images'
-    ).all()  # Get ALL categories
+    ).all()
     
-    context = {
+    print(f"Categories count: {categories.count()}")
+    for cat in categories:
+        print(f"  - {cat.name}: {cat.vehicles.count()} vehicles")
+    
+    print(f"Context: {{'categories': {categories}}}")
+    
+    return render(request, 'fleet.html', {
         'categories': categories,
-    }
-    return render(request, 'fleet.html', context)
+    })
 
 
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
