@@ -57,8 +57,8 @@ def fleet(request):
     """Display all vehicle categories with their vehicles"""
     categories = VehicleCategory.objects.prefetch_related(
         'vehicles__gallery_images'
-    ).filter(vehicles__is_active=True).distinct()
-
+    ).all()  # Get ALL categories
+    
     context = {
         'categories': categories,
     }
@@ -68,3 +68,4 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
