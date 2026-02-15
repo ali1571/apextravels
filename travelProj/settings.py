@@ -28,7 +28,7 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ["apextravels-production.up.railway.app"]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -151,3 +151,4 @@ DEFAULT_FILE_STORAGE = 'travelApp.storage.SupabaseStorage'  # Change 'fleet' to 
 MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+
