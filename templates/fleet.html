@@ -1,3 +1,25 @@
+{% if categories %}
+    <div style="background: black; color: white; padding: 20px; margin: 20px;">
+        <h2>DEBUG INFO:</h2>
+        <p>Total Categories: {{ categories.count }}</p>
+        
+        {% for category in categories %}
+            <h3>{{ category.name }} - {{ category.vehicles.count }} vehicles</h3>
+            
+            {% for vehicle in category.vehicles.all|slice:":1" %}
+                <p>First Vehicle: {{ vehicle.name }}</p>
+                <p>Image Path: {{ vehicle.featured_image.name }}</p>
+                <p>Image URL: {{ vehicle.featured_image.url }}</p>
+                <img src="{{ vehicle.featured_image.url }}" style="max-width: 200px;">
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% else %}
+    <div style="background: red; color: white; padding: 20px;">
+        NO CATEGORIES FOUND!
+    </div>
+{% endif %}
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -705,4 +727,5 @@
     </script>
 
 </body>
+
 </html>
