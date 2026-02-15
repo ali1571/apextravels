@@ -97,13 +97,14 @@ DATABASES = {
 '''
 # Override with PostgreSQL if DATABASE_URL is provided (Railway)
 import dj_database_url
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.parse(
-        os.environ.get('DATABASE_URL'),
+
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3'),
         conn_max_age=600,
         conn_health_checks=True,
     )
-
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -161,6 +162,7 @@ DEFAULT_FILE_STORAGE = 'travelApp.storage.SupabaseStorage'  # Change 'core' to y
 
 # Media URL points to Supabase
 MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/'
+
 
 
 
