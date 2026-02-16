@@ -58,26 +58,42 @@ from django.shortcuts import render
 from .models import VehicleCategory
 
 logger = logging.getLogger(__name__)
-
 def fleet(request):
     """Display all vehicle categories with their vehicles"""
-    logger.error("===== FLEET VIEW CALLED =====")  # Use error level so it definitely shows
     
-    from django.conf import settings
-    from django.db import connection
-    
-    logger.error(f"Database engine: {settings.DATABASES['default']['ENGINE']}")
-    logger.error(f"Database name: {settings.DATABASES['default'].get('NAME', 'Not set')}")
-    
+    # Force a simple response first
     categories = VehicleCategory.objects.all()
-    logger.error(f"Categories count: {categories.count()}")
     
-    return render(request, 'fleet.html', {
-        'categories': categories,
-    })
+    # Create simple HTML response to bypass template
+    html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Fleet Test</title>
+        <style>
+            body {{ background: black; color: white; padding: 40px; font-family: monospace; }}
+            .category {{ background: #333; padding: 20px; margin: 20px 0; border: 2px solid lime; }}
+        </style>
+    </head>
+    <body>
+        <h1>🚗 DIRECT VIEW OUTPUT (Bypassing Template)</h1>
+        <p><strong>Categories found:</strong> {categories.count()}</p>
+        
+        {''.join([f'<div class="category"><h2>{cat.name}</h2><p>Vehicles: {cat.vehicles.count()}</p></div>' for cat in categories])}
+        
+        <hr>
+        <h2>Context that WOULD be passed to template:</h2>
+        <pre>{{'categories': categories}}</pre>
+    </body>
+    </html>
+    """
+    
+    return HttpResponse(html)
+
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
