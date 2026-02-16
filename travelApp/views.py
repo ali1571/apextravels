@@ -103,6 +103,7 @@ from django.core.management import call_command
 from io import StringIO
 
 @staff_member_required  # Only admins can access
+@csrf_exempt
 def admin_sync_supabase(request):
     """Admin view to manually trigger Supabase sync"""
     
@@ -176,7 +177,7 @@ def admin_sync_supabase(request):
 # views.py
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-
+@csrf_exempt
 def create_superuser_once(request):
     """One-time superuser creation - delete after use!"""
     
@@ -229,6 +230,7 @@ def create_superuser_once(request):
         </body>
         </html>
         """)
+
 
 
 
