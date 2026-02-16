@@ -76,7 +76,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.management import call_command
 from io import StringIO
 
-@csrf_exempt
+@csrf_protect
 def create_superuser_once(request):
     """One-time superuser creation - delete after use!"""
     
@@ -131,7 +131,7 @@ def create_superuser_once(request):
         """)
 
 
-@csrf_exempt
+@csrf_protect
 def admin_sync_supabase(request):
     """Manual trigger for Supabase sync"""
     
@@ -205,6 +205,7 @@ def admin_sync_supabase(request):
     </html>
     """
     return HttpResponse(html)
+
 
 
 
