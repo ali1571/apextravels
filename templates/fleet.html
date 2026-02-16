@@ -403,23 +403,7 @@
 <body>
 
     
-<!-- ========== ABSOLUTE TEST - NO CSS ========== -->
-<div style="position: fixed; top: 0; left: 0; width: 100%; background: lime; color: black; padding: 20px; z-index: 999999; font-family: monospace; font-size: 14px;">
-    <h1>🔍 TEMPLATE DEBUG</h1>
-    <p><strong>Categories:</strong> {{ categories|length }}</p>
-    
-    {% for cat in categories %}
-        <div style="background: white; margin: 10px 0; padding: 10px; border: 2px solid black;">
-            <h3>{{ cat.name }}</h3>
-            <p>Vehicles: {{ cat.vehicles.all|length }}</p>
-            <p>Active: {{ cat.vehicles.all|length }}</p>
-        </div>
-    {% empty %}
-        <div style="background: red; color: white; padding: 20px;">
-            <h2>❌ FOR LOOP IS EMPTY!</h2>
-        </div>
-    {% endfor %}
-</div>
+
 
     <!-- Navigation Bar - Same as home.html -->
     <div class=" backdrop-blur-xl navbar-container animate-fade-in">
@@ -727,6 +711,7 @@
 </body>
 
 </html>
+
 
 
 
