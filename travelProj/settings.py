@@ -34,9 +34,20 @@ ALLOWED_HOSTS = [
     "apextravels-production.up.railway.app",
     "www.apextourtravel.com",
     "apextourtravel.com",
+    'https://www.apextourtravel.com',
+    'https://apextourtravel.com',
     
 ]
 
+# Make sure these are set correctly
+CSRF_COOKIE_SECURE = True  # Only send CSRF cookie over HTTPS
+CSRF_COOKIE_SAMESITE = 'Lax'  # Or 'Strict' depending on your needs
+SESSION_COOKIE_SECURE = True  # Only send session cookie over HTTPS
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://www.apextourtravel.com',
+    'https://apextourtravel.com',  # Also add without www
+]
 
 # Application definition
 
@@ -169,6 +180,7 @@ DEFAULT_FILE_STORAGE = 'travelApp.storage.SupabaseStorage'  # Change 'core' to y
 
 # Media URL points to Supabase
 MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/'
+
 
 
 
