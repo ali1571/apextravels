@@ -173,6 +173,64 @@ def admin_sync_supabase(request):
     return HttpResponse(html)
 
 
+# views.py
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+
+def create_superuser_once(request):
+    """One-time superuser creation - delete after use!"""
+    
+    # Check if superuser already exists
+    if User.objects.filter(is_superuser=True).exists():
+        return HttpResponse("""
+        <html>
+        <body style="background: black; color: yellow; padding: 40px;">
+            <h1>⚠️ Superuser already exists!</h1>
+            <p>Go to <a href="/admin/" style="color: cyan;">/admin/</a></p>
+        </body>
+        </html>
+        """)
+    
+    # Create superuser
+    try:
+        user = User.objects.create_superuser(
+            username='admin',
+            email='admin@apextravels.com',
+            password='temppass123'  # Change this after first login!
+        )
+        
+        return HttpResponse(f"""
+        <html>
+        <body style="background: black; color: lime; padding: 40px; font-family: monospace;">
+            <h1>✅ Superuser Created!</h1>
+            <p><strong>Username:</strong> admin</p>
+            <p><strong>Password:</strong> temppass123</p>
+            <p style="color: red;">⚠️ IMPORTANT: Change this password immediately after login!</p>
+            <br>
+            <a href="/admin/" style="
+                background: #ff3600; 
+                color: white; 
+                padding: 15px 30px; 
+                text-decoration: none; 
+                border-radius: 5px; 
+                font-weight: bold;
+                display: inline-block;
+            ">Go to Admin Login →</a>
+        </body>
+        </html>
+        """)
+        
+    except Exception as e:
+        return HttpResponse(f"""
+        <html>
+        <body style="background: black; color: red; padding: 40px;">
+            <h1>❌ Error</h1>
+            <pre>{str(e)}</pre>
+        </body>
+        </html>
+        """)
+
+
 
 
 
