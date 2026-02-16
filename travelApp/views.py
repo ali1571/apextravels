@@ -96,4 +96,83 @@ def about(request):
 
 
 
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.management import call_command
+from io import StringIO
+
+@staff_member_required  # Only admins can access
+def admin_sync_supabase(request):
+    """Admin view to manually trigger Supabase sync"""
+    
+    if request.method == 'POST':
+        # Capture command output
+        output = StringIO()
+        
+        try:
+            # Run the sync command
+            call_command('sync_supabase', stdout=output)
+            result = output.getvalue()
+            
+            html = f"""
+            <html>
+            <head><title>Sync Complete</title></head>
+            <body style="background: black; color: lime; padding: 40px; font-family: monospace;">
+                <h1>✅ Sync Complete!</h1>
+                <pre>{result}</pre>
+                <br>
+                <a href="/admin/" style="color: cyan;">← Back to Admin</a>
+            </body>
+            </html>
+            """
+            return HttpResponse(html)
+            
+        except Exception as e:
+            html = f"""
+            <html>
+            <head><title>Sync Error</title></head>
+            <body style="background: black; color: red; padding: 40px; font-family: monospace;">
+                <h1>❌ Error</h1>
+                <pre>{str(e)}</pre>
+                <br>
+                <a href="/admin/" style="color: cyan;">← Back to Admin</a>
+            </body>
+            </html>
+            """
+            return HttpResponse(html)
+    
+    # GET request - show the sync button
+    html = """
+    <html>
+    <head><title>Sync Supabase</title></head>
+    <body style="background: black; color: white; padding: 40px; font-family: monospace;">
+        <h1>🔄 Sync Database with Supabase</h1>
+        <p>This will import all vehicles from Supabase into the Railway Postgres database.</p>
+        
+        <form method="POST">
+            <button type="submit" style="
+                background: #ff3600; 
+                color: white; 
+                padding: 20px 40px; 
+                font-size: 18px; 
+                border: none; 
+                border-radius: 10px; 
+                cursor: pointer;
+                font-weight: bold;
+            ">
+                🚀 Run Sync Now
+            </button>
+        </form>
+        
+        <br><br>
+        <a href="/admin/" style="color: cyan;">← Back to Admin</a>
+    </body>
+    </html>
+    """
+    return HttpResponse(html)
+
+
+
+
 
