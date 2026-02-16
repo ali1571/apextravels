@@ -53,12 +53,16 @@ def home(request):
     return render(request, 'home.html')
 
 from .models import VehicleCategory
+from django.db.models import Prefetch
 def fleet(request):
     """Display all vehicle categories with their vehicles"""
     categories = VehicleCategory.objects.prefetch_related(
-        'vehicles__gallery_images'
-    ).filter(vehicles__is_active=True).distinct()
-
+        Prefetch(
+            'vehicles',
+            queryset=Vehicle.objects.filter(is_active=True).select_related('category').prefetch_related('gallery_images')
+        )
+    ).filter(vehicles__is_active=True).distinct().order_by('order')
+    
     context = {
         'categories': categories,
     }
@@ -67,6 +71,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
