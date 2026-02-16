@@ -53,28 +53,31 @@ def home(request):
     return render(request, 'home.html')
 
 from .models import VehicleCategory
+import logging
+from django.shortcuts import render
+from .models import VehicleCategory
+
+logger = logging.getLogger(__name__)
+
 def fleet(request):
     """Display all vehicle categories with their vehicles"""
+    logger.error("===== FLEET VIEW CALLED =====")  # Use error level so it definitely shows
+    
     from django.conf import settings
     from django.db import connection
     
-    print("===== FLEET VIEW CALLED =====")
-    print(f"Database engine: {settings.DATABASES['default']['ENGINE']}")
-    print(f"Database name: {settings.DATABASES['default'].get('NAME', 'Not set')}")
-    print(f"Database connection: {connection.settings_dict}")
+    logger.error(f"Database engine: {settings.DATABASES['default']['ENGINE']}")
+    logger.error(f"Database name: {settings.DATABASES['default'].get('NAME', 'Not set')}")
     
-    categories = VehicleCategory.objects.prefetch_related(
-        'vehicles__gallery_images'
-    ).all()
-    
-    print(f"Categories count: {categories.count()}")
+    categories = VehicleCategory.objects.all()
+    logger.error(f"Categories count: {categories.count()}")
     
     return render(request, 'fleet.html', {
         'categories': categories,
     })
-
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
