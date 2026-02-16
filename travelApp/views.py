@@ -3,7 +3,10 @@ from django.http import HttpResponse
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import render
 
+@csrf_protect  # Usually not needed if middleware is enabled
 def home(request):
     if request.method == "POST":
         # 1. Capture the data from the frontend names
@@ -72,6 +75,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
