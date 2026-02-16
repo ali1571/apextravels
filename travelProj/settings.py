@@ -29,7 +29,11 @@ DEBUG = "True"
 
 
 #ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-ALLOWED HOSTS = [".railway.app,https://apextravels-production.up.railway.app/"]
+ALLOWED_HOSTS = [
+    ".railway.app",
+    "apextravels-production.up.railway.app",
+]
+
 
 # Application definition
 
@@ -162,6 +166,7 @@ DEFAULT_FILE_STORAGE = 'travelApp.storage.SupabaseStorage'  # Change 'core' to y
 
 # Media URL points to Supabase
 MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/'
+
 
 
 
