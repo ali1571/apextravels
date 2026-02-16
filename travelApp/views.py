@@ -53,25 +53,25 @@ def home(request):
     return render(request, 'home.html')
 
 from .models import VehicleCategory
-
 def fleet(request):
     """Display all vehicle categories with their vehicles"""
+    from django.conf import settings
+    from django.db import connection
+    
     print("===== FLEET VIEW CALLED =====")
+    print(f"Database engine: {settings.DATABASES['default']['ENGINE']}")
+    print(f"Database name: {settings.DATABASES['default'].get('NAME', 'Not set')}")
+    print(f"Database connection: {connection.settings_dict}")
     
     categories = VehicleCategory.objects.prefetch_related(
         'vehicles__gallery_images'
     ).all()
     
     print(f"Categories count: {categories.count()}")
-    for cat in categories:
-        print(f"  - {cat.name}: {cat.vehicles.count()} vehicles")
-    
-    print(f"Context: {{'categories': {categories}}}")
     
     return render(request, 'fleet.html', {
         'categories': categories,
     })
-
 
 def about(request):
     if request== "POST":
