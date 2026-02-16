@@ -1,31 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Fleet Debug</title>
-    <style>
-        .debug { background: red; color: white; padding: 20px; margin: 20px; }
-    </style>
-</head>
-<body>
 
-<div class="debug">
-    <h1>🔍 DEBUG INFO</h1>
-    <p>Categories variable exists: {{ categories }}</p>
-    <p>Categories count: {{ categories.count }}</p>
-    <p>Categories type: {{ categories|length }}</p>
-    
-    <h2>Raw categories:</h2>
-    <pre>{{ categories }}</pre>
-    
-    <h2>Loop test:</h2>
-    {% for category in categories %}
-        <p>✅ {{ category.name }}</p>
-    {% empty %}
-        <p>❌ NO CATEGORIES IN LOOP!</p>
-    {% endfor %}
-</div>
-
-<!-- Rest of your template below -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -735,4 +708,5 @@
 </body>
 
 </html>
+
 
