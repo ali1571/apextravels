@@ -8,9 +8,9 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('fleet/', views.fleet, name='fleet'),
     path('about/', views.about, name= 'about'),
-    path('admin/sync-supabase/', views.admin_sync_supabase, name='admin_sync'),
-    path('setup/create-admin/', views.create_superuser_once, name='create_admin'),
+
 
 
 ]
+
 
