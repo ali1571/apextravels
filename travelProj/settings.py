@@ -32,6 +32,9 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = [
     ".railway.app",
     "apextravels-production.up.railway.app",
+    "www.apextourtravel.com",
+    "apextourtravel.com",
+    
 ]
 
 
@@ -166,6 +169,7 @@ DEFAULT_FILE_STORAGE = 'travelApp.storage.SupabaseStorage'  # Change 'core' to y
 
 # Media URL points to Supabase
 MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/'
+
 
 
 
