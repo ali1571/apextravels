@@ -53,6 +53,7 @@ def home(request):
     return render(request, 'home.html')
 
 from .models import VehicleCategory
+from .models import Vehicle
 from django.db.models import Prefetch
 def fleet(request):
     """Display all vehicle categories with their vehicles"""
@@ -71,6 +72,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
