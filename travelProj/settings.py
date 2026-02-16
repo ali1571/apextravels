@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'travelApp',
     'tailwind',
     'theme',
-    'django_browser_reload',
+
 ]
 TAILWIND_APP_NAME = 'theme'
 # config/settings.py
@@ -55,7 +55,7 @@ TAILWIND_APP_NAME = 'theme'
 NPM_BIN_PATH = r"C:\\Program Files\\nodejs\\npm.cmd"
 
 MIDDLEWARE = [
-    'django_browser_reload.middleware.BrowserReloadMiddleware',
+
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -166,6 +166,7 @@ DEFAULT_FILE_STORAGE = 'travelApp.storage.SupabaseStorage'  # Change 'core' to y
 
 # Media URL points to Supabase
 MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/'
+
 
 
 
