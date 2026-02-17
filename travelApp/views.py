@@ -19,14 +19,14 @@ def home(request):
             'vehicle_type': request.POST.get('vehicle_type'),
             'hours': request.POST.get('hours'),
             'email': request.POST.get('email'),
-            'phone': request.POST.get('phone'),
+            
         }
 
         print("\n" + "=" * 50)
         print(f"🚀 NEW LEAD RECEIVED: {data['email']}")
         print(f"📍 FROM: {data['pickup']} ➡️ TO: {data['dropoff']}")
         print(f"🚗 VEHICLE: {data['vehicle_type']} for {data['hours']} hrs")
-        print(f"📞 CONTACT: {data['phone']}")
+        print(f"📞 CONTACT: {data['email']}")
         print("=" * 50 + "\n")
 
         html_content = render_to_string('emails/qoute_request.html', {'data': data})
@@ -70,6 +70,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
