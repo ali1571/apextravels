@@ -36,7 +36,7 @@ def home(request):
 
             resend.Emails.send({
                 "from": "onboarding@resend.dev",  # ← Keep this until you verify your domain
-                "to": ["aliabid1571@gmail.com"],  #Sales@apextourtravel.com
+                "to": ["Sales@apextourtravel.com"],  #
                 "reply_to": data['email'],
                 "subject": f"New Quote Request from {data['email']}",
                 "html": html_content,
@@ -70,6 +70,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
