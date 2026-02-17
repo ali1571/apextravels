@@ -49,6 +49,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://apextourtravel.com',  # Also add without www
 ]
 
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -193,6 +195,7 @@ DEFAULT_FILE_STORAGE = 'travelApp.storage.SupabaseStorage'  # Change 'core' to y
 
 # Media URL points to Supabase
 MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/'
+
 
 
 
