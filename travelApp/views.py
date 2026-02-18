@@ -97,13 +97,13 @@ def home(request):
             
             # Show success message and redirect
             messages.success(request, 'Quote request sent successfully! We will contact you soon.')
-            return redirect('home') 
+            return render(request, 'home.html') 
             
         except Exception as e:
             print(f"❌ ERROR: {str(e)}")
             traceback.print_exc()
             messages.error(request, 'Failed to send quote. Please try again.')
-            return redirect('home')
+            return render(request, 'home.html') 
     
     # GET request - render the form
     return render(request, 'home.html') 
@@ -128,6 +128,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
