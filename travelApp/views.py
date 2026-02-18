@@ -94,24 +94,19 @@ def home(request):
             })
             
             print(f"✅ Email sent successfully!")
-            print(f"Resend Response: {response}")
             
-            return JsonResponse({
-                'success': True,
-                'message': 'Quote rdequest sent successfully!'
-            })
+            # Show success message and redirect
+            messages.success(request, 'Quote request sent successfully! We will contact you soon.')
+            return redirect('home') 
             
         except Exception as e:
             print(f"❌ ERROR: {str(e)}")
-            print(f"Error type: {type(e).__name__}")
             traceback.print_exc()
-            
-            return JsonResponse({
-                'error': f'Failed to send quote: {str(e)}'
-            }, status=500)
+            messages.error(request, 'Failed to send quote. Please try again.')
+            return redirect('home')
     
     # GET request - render the form
-    return render(request, 'home.html')  # Your template name
+    return render(request, 'home.html') 
 
 from .models import VehicleCategory
 from .models import Vehicle
@@ -133,6 +128,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
