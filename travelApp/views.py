@@ -67,7 +67,6 @@ def home(request):
                     </div>
                     <div class="content">
                         <div class="row"><span class="label">📧 Email:</span> {data['email']}</div>
-                        <div class="row"><span class="label">📞 Phone:</span> {data['phone']}</div>
                         <div class="row"><span class="label">📍 Pickup:</span> {data['pickup']}</div>
                         <div class="row"><span class="label">📍 Drop-off:</span> {data['dropoff']}</div>
                         <div class="row"><span class="label">👥 Passengers:</span> {data['passengers']}</div>
@@ -128,6 +127,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
