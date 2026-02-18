@@ -28,7 +28,7 @@ def home(request):
                 'vehicle_type': request.POST.get('vehicle_type', ''),
                 'hours': request.POST.get('hours', ''),
                 'email': request.POST.get('email', ''),
-                'phone': request.POST.get('phone', ''),
+                
             }
             
             # Debug logging
@@ -37,7 +37,7 @@ def home(request):
             print(f"📧 Customer: {data['email']}")
             print(f"📍 Route: {data['pickup']} → {data['dropoff']}")
             print(f"🚗 Vehicle: {data['vehicle_type']} for {data['hours']} hrs")
-            print(f"📞 Phone: {data['phone']}")
+          
             print("=" * 50 + "\n")
             
             # Validate required fields
@@ -128,6 +128,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
