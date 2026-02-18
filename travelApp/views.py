@@ -8,47 +8,74 @@ from django.shortcuts import render
 import resend
 from django.conf import settings
 
+import resend
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_protect
+import traceback
+
 @csrf_protect
 def home(request):
     if request.method == "POST":
-        data = {
-            'pickup': request.POST.get('pickup'),
-            'dropoff': request.POST.get('dropoff'),
-            'passengers': request.POST.get('passengers'),
-            'date': request.POST.get('date'),
-            'vehicle_type': request.POST.get('vehicle_type'),
-            'hours': request.POST.get('hours'),
-            'email': request.POST.get('email'),
-            
-        }
-
-        print("\n" + "=" * 50)
-        print(f"🚀 NEW LEAD RECEIVED: {data['email']}")
-        print(f"📍 FROM: {data['pickup']} ➡️ TO: {data['dropoff']}")
-        print(f"🚗 VEHICLE: {data['vehicle_type']} for {data['hours']} hrs")
-        print(f"📞 CONTACT: {data['email']}")
-        print("=" * 50 + "\n")
-
-        html_content = render_to_string('emails/qoute_request.html', {'data': data})
-
         try:
+            # Capture form data
+            data = {
+                'pickup': request.POST.get('pickup', ''),
+                'dropoff': request.POST.get('dropoff', ''),
+                'passengers': request.POST.get('passengers', ''),
+                'date': request.POST.get('date', ''),
+                'vehicle_type': request.POST.get('vehicle_type', ''),
+                'hours': request.POST.get('hours', ''),
+                'email': request.POST.get('email', ''),
+                'phone': request.POST.get('phone', ''),
+            }
+            
+            # Debug logging
+            print("\n" + "=" * 50)
+            print(f"🚀 NEW QUOTE REQUEST")
+            print(f"📧 Customer: {data['email']}")
+            print(f"📍 Route: {data['pickup']} → {data['dropoff']}")
+            print(f"🚗 Vehicle: {data['vehicle_type']} for {data['hours']} hrs")
+            print(f"📞 Phone: {data['phone']}")
+            print("=" * 50 + "\n")
+            
+            # Validate required fields
+            if not data['email']:
+                print("❌ ERROR: No email provided")
+                return JsonResponse({'error': 'Email is required'}, status=400)
+            
+            # Send email via Resend
+            print("📧 Sending email via Resend...")
             resend.api_key = settings.RESEND_API_KEY
-
-            resend.Emails.send({
-                "from": "onboarding@resend.dev",  # ← Keep this until you verify your domain
-                "to": ["Sales@apextourtravel.com"],  #
-                "reply_to": data['email'],
+            
+            response = resend.Emails.send({
+                "from": "noreply@apextourtravel.com",  # ✅ YOUR verified domain
+                "to": ["Sales@apextourtravel.com"],
+                "reply_to": [data['email']],  # Customer's email for replies
                 "subject": f"New Quote Request from {data['email']}",
                 "html": html_content,
             })
-
-            print(f"✅ Email successfully sent!")
-
+            
+            print(f"✅ Email sent successfully!")
+            print(f"Resend Response: {response}")
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Quote request sent successfully!'
+            })
+            
         except Exception as e:
-            print(f"❌ Error sending email: {e}")
-            return HttpResponse("Error sending quote. Please try again.")
-
-    return render(request, 'home.html')
+            print(f"❌ ERROR: {str(e)}")
+            print(f"Error type: {type(e).__name__}")
+            traceback.print_exc()
+            
+            return JsonResponse({
+                'error': f'Failed to send quote: {str(e)}'
+            }, status=500)
+    
+    # GET request - render the form
+    return render(request, 'home.html')  # Your template name
 
 from .models import VehicleCategory
 from .models import Vehicle
@@ -70,6 +97,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
