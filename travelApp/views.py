@@ -44,6 +44,42 @@ def home(request):
             if not data['email']:
                 print("❌ ERROR: No email provided")
                 return JsonResponse({'error': 'Email is required'}, status=400)
+
+
+                        # Create HTML email content directly
+            html_content = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                    .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                    .header {{ background: #FF3600; color: white; padding: 20px; text-align: center; border-radius: 5px 5px 0 0; }}
+                    .content {{ background: #f9f9f9; padding: 30px; border: 1px solid #ddd; }}
+                    .row {{ margin: 10px 0; padding: 10px; background: white; border-left: 4px solid #FF3600; }}
+                    .label {{ font-weight: bold; color: #FF3600; }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h2>🚗 New Quote Request</h2>
+                    </div>
+                    <div class="content">
+                        <div class="row"><span class="label">📧 Email:</span> {data['email']}</div>
+                        <div class="row"><span class="label">📞 Phone:</span> {data['phone']}</div>
+                        <div class="row"><span class="label">📍 Pickup:</span> {data['pickup']}</div>
+                        <div class="row"><span class="label">📍 Drop-off:</span> {data['dropoff']}</div>
+                        <div class="row"><span class="label">👥 Passengers:</span> {data['passengers']}</div>
+                        <div class="row"><span class="label">📅 Date:</span> {data['date']}</div>
+                        <div class="row"><span class="label">🚗 Vehicle:</span> {data['vehicle_type']}</div>
+                        <div class="row"><span class="label">⏰ Hours:</span> {data['hours']}</div>
+                    </div>
+                </div>
+            </body>
+            </html>
+            """
+            
             
             # Send email via Resend
             print("📧 Sending email via Resend...")
@@ -62,7 +98,7 @@ def home(request):
             
             return JsonResponse({
                 'success': True,
-                'message': 'Quote request sent successfully!'
+                'message': 'Quote rdequest sent successfully!'
             })
             
         except Exception as e:
