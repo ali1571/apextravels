@@ -7,7 +7,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render
 import resend
 from django.conf import settings
-
+from django.shortcuts import render, redirect
+from django.contrib import messages
 import resend
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -127,6 +128,7 @@ def fleet(request):
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
 
 
 
