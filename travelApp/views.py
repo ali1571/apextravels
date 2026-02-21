@@ -111,23 +111,71 @@ def home(request):
 from .models import VehicleCategory
 from .models import Vehicle
 from django.db.models import Prefetch
+
+
 def fleet(request):
     """Display all vehicle categories with their vehicles"""
     categories = VehicleCategory.objects.prefetch_related(
         Prefetch(
             'vehicles',
-            queryset=Vehicle.objects.filter(is_active=True).select_related('category').prefetch_related('gallery_images')
+            queryset=Vehicle.objects.filter(is_active=True).select_related('category').prefetch_related(
+                'gallery_images')
         )
     ).filter(vehicles__is_active=True).distinct().order_by('order')
-    
+
+    # Fix URLs for "All Party Buses" -> "Party Buses"
+    for category in categories:
+        for vehicle in category.vehicles.all():
+            if vehicle.featured_image:
+                vehicle.featured_image.name = vehicle.featured_image.name.replace('All Party Buses', 'Party Buses')
+            for gallery_img in vehicle.gallery_images.all():
+                if gallery_img.image:
+                    gallery_img.image.name = gallery_img.image.name.replace('All Party Buses', 'Party Buses')
+
     context = {
         'categories': categories,
     }
     return render(request, 'fleet.html', context)
 
+
+from django.shortcuts import get_object_or_404
+
+def fleet_vehicle(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    categories = VehicleCategory.objects.prefetch_related('vehicles__gallery_images').all()
+
+    # Fix URLs
+    for category in categories:
+        for v in category.vehicles.all():
+            if v.featured_image:
+                v.featured_image.name = v.featured_image.name.replace('All Party Buses', 'Party Buses')
+            for gallery_img in v.gallery_images.all():
+                if gallery_img.image:
+                    gallery_img.image.name = gallery_img.image.name.replace('All Party Buses', 'Party Buses')
+
+    return render(request, 'fleet.html', {
+        'categories': categories,
+        'auto_open_vehicle_id': vehicle_id
+    })
+
+
+def vehicle_gallery(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+
+    # Fix URLs for "All Party Buses" -> "Party Buses"
+    if vehicle.featured_image:
+        vehicle.featured_image.name = vehicle.featured_image.name.replace('All Party Buses', 'Party Buses')
+    for gallery_img in vehicle.gallery_images.all():
+        if gallery_img.image:
+            gallery_img.image.name = gallery_img.image.name.replace('All Party Buses', 'Party Buses')
+
+    return render(request, 'vehicle_gallery.html', {'vehicle': vehicle})
+
 def about(request):
     if request== "POST":
         return render(request, 'fleet.html')
+
+
 
 
 

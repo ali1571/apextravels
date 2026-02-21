@@ -1,0 +1,36 @@
+{% load custom_filter %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ vehicle.name }} - Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black">
+    <div class="container mx-auto p-4">
+        <h1 class="text-white text-3xl mb-4">{{ vehicle.name }}</h1>
+
+        <img id="mainImage"
+             src="{{ vehicle.featured_image.url|fix_party_bus_url }}"
+             class="w-full max-w-4xl mx-auto rounded-lg mb-4"
+             alt="{{ vehicle.name }}">
+
+        <div class="grid grid-cols-4 gap-2 max-w-4xl mx-auto">
+            <img src="{{ vehicle.featured_image.url|fix_party_bus_url }}"
+                 onclick="changeImage('{{ vehicle.featured_image.url|fix_party_bus_url }}')"
+                 class="cursor-pointer rounded hover:opacity-75">
+
+            {% for image in vehicle.gallery_images.all %}
+            <img src="{{ image.image.url|fix_party_bus_url }}"
+                 onclick="changeImage('{{ image.image.url|fix_party_bus_url }}')"
+                 class="cursor-pointer rounded hover:opacity-75">
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+    function changeImage(url) {
+        document.getElementById('mainImage').src = url;
+    }
+    </script>
+</body>
+</html>
