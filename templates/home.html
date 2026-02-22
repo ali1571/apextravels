@@ -434,6 +434,32 @@
                         }
                     </style>
 
+                    <!-- Name and Phone Grid (NEW) -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="text-sm block mb-2" style="color: var(--secondary);">
+                                Your Name
+                            </label>
+                            <input type="text" name="name" class="input-field w-full px-4 py-3 rounded-lg text-sm" placeholder="John Doe" required>
+                        </div>
+
+                        <div>
+                            <label class="text-sm block mb-2" style="color: var(--secondary);">
+                                Phone Number
+                            </label>
+                            <input type="tel" name="phone" class="input-field w-full px-4 py-3 rounded-lg text-sm" placeholder="(555) 123-4567" required>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-4">
+                        <label class="text-sm block mb-2"
+                               style="color: var(--secondary);">
+                            Email
+                        </label>
+                        <input type="email" name="email" class="input-field w-full px-4 py-3 rounded-lg text-sm" placeholder="your@email.com" required>
+                    </div>
+
                     <!-- Pickup -->
                     <div class="mb-4">
                         <label class="text-sm block mb-2"
@@ -452,7 +478,7 @@
                         <input type="text" name="dropoff" class="input-field w-full px-4 py-3 rounded-lg text-sm" placeholder="Enter destination" required>
                     </div>
 
-                    <!-- Grid -->
+                    <!-- Vehicle and Date Grid -->
                     <div class="grid grid-cols-2 gap-4 mb-4">
 
                         <div>
@@ -462,7 +488,7 @@
                             <select name="vehicle_type" class="input-field w-full px-4 py-3 rounded-lg text-sm" required>
                                 <option value="" disabled selected>Select vehicle</option>
                                 <option value="sedan">SUV & Sedan</option>
-                                <option value="suv">All Party Buses</option>
+                                <option value="suv">Party Buses</option>
                                 <option value="luxury">Stretch Limos</option>
                                 <option value="van">Charter Buses</option>
                             </select>
@@ -477,7 +503,7 @@
                         </div>
                     </div>
 
-                    <!-- Grid 2 (NEW) -->
+                    <!-- Hours and Passengers Grid -->
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <div>
                             <label class="text-sm block mb-2" style="color: var(--secondary);">
@@ -496,21 +522,9 @@
                                    style="color: var(--secondary);">
                                 Passengers
                             </label>
-                            <input type="text" name="passengers" class="input-field w-full px-4 py-3 rounded-lg text-sm" required>
+                            <input type="number" name="passengers" min="1" placeholder="e.g. 10" class="input-field w-full px-4 py-3 rounded-lg text-sm" required>
                         </div>
                     </div>
-
-                    <!-- Email -->
-                    <div class="mb-4">
-                        <label class="text-sm block mb-2"
-                               style="color: var(--secondary);">
-                            Email
-                        </label>
-                        <input type="email" name="email" class="input-field w-full px-4 py-3 rounded-lg text-sm" required>
-                    </div>
-
-                                        <!-- Phone -->
-                    
 
                     <!-- Submit -->
                     <button type="submit"

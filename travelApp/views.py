@@ -16,38 +16,40 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
 import traceback
 
+
 @csrf_protect
 def home(request):
     if request.method == "POST":
         try:
             # Capture form data
             data = {
+                'name': request.POST.get('name', ''),
+                'phone': request.POST.get('phone', ''),
+                'email': request.POST.get('email', ''),
                 'pickup': request.POST.get('pickup', ''),
                 'dropoff': request.POST.get('dropoff', ''),
                 'passengers': request.POST.get('passengers', ''),
                 'date': request.POST.get('date', ''),
                 'vehicle_type': request.POST.get('vehicle_type', ''),
                 'hours': request.POST.get('hours', ''),
-                'email': request.POST.get('email', ''),
-                
             }
-            
+
             # Debug logging
             print("\n" + "=" * 50)
             print(f"🚀 NEW QUOTE REQUEST")
-            print(f"📧 Customer: {data['email']}")
+            print(f"👤 Customer: {data['name']}")
+            print(f"📧 Email: {data['email']}")
+            print(f"📱 Phone: {data['phone']}")
             print(f"📍 Route: {data['pickup']} → {data['dropoff']}")
             print(f"🚗 Vehicle: {data['vehicle_type']} for {data['hours']} hrs")
-          
             print("=" * 50 + "\n")
-            
+
             # Validate required fields
             if not data['email']:
                 print("❌ ERROR: No email provided")
                 return JsonResponse({'error': 'Email is required'}, status=400)
 
-
-                        # Create HTML email content directly
+            # Create HTML email content
             html_content = f"""
             <!DOCTYPE html>
             <html>
@@ -67,6 +69,8 @@ def home(request):
                         <h2>🚗 New Quote Request</h2>
                     </div>
                     <div class="content">
+                        <div class="row"><span class="label">👤 Name:</span> {data['name']}</div>
+                        <div class="row"><span class="label">📱 Phone:</span> {data['phone']}</div>
                         <div class="row"><span class="label">📧 Email:</span> {data['email']}</div>
                         <div class="row"><span class="label">📍 Pickup:</span> {data['pickup']}</div>
                         <div class="row"><span class="label">📍 Drop-off:</span> {data['dropoff']}</div>
@@ -79,34 +83,33 @@ def home(request):
             </body>
             </html>
             """
-            
-            
+
             # Send email via Resend
             print("📧 Sending email via Resend...")
             resend.api_key = settings.RESEND_API_KEY
-            
+
             response = resend.Emails.send({
-                "from": "noreply@apextourtravel.com",  # ✅ YOUR verified domain
+                "from": "noreply@apextourtravel.com",
                 "to": ["Sales@apextourtravel.com"],
-                "reply_to": [data['email']],  # Customer's email for replies
-                "subject": f"New Quote Request from {data['email']}",
+                "reply_to": [data['email']],
+                "subject": f"New Quote Request from {data['name']} ({data['email']})",
                 "html": html_content,
             })
-            
+
             print(f"✅ Email sent successfully!")
-            
+
             # Show success message and redirect
             messages.success(request, 'Quote request sent successfully! We will contact you soon.')
-            return render(request, 'home.html') 
-            
+            return render(request, 'home.html')
+
         except Exception as e:
             print(f"❌ ERROR: {str(e)}")
             traceback.print_exc()
             messages.error(request, 'Failed to send quote. Please try again.')
-            return render(request, 'home.html') 
-    
-    # GET request - render the form
-    return render(request, 'home.html') 
+            return render(request, 'home.html')
+
+            # GET request - render the form
+    return render(request, 'home.html')
 
 from .models import VehicleCategory
 from .models import Vehicle
