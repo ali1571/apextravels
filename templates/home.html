@@ -482,16 +482,11 @@
                     <div class="grid grid-cols-2 gap-4 mb-4">
 
                         <div>
-                            <label class="text-sm block mb-2" style="color: var(--secondary);">
+                            <label class="text-sm block mb-2"
+                               style="color: var(--secondary);">
                                 Vehicle
                             </label>
-                            <select name="vehicle_type" class="input-field w-full px-4 py-3 rounded-lg text-sm" required>
-                                <option value="" disabled selected>Select vehicle</option>
-                                <option value="sedan">SUV & Sedan</option>
-                                <option value="suv">Party Buses</option>
-                                <option value="luxury">Stretch Limos</option>
-                                <option value="van">Charter Buses</option>
-                            </select>
+                            <input type="text" name="vehicle_type" class="input-field w-full px-4 py-3 rounded-lg text-sm" placeholder="Enter Vehicle name" required>
                         </div>
 
                         <div>
