@@ -123,6 +123,7 @@ def home(request):
             # GET request - render the form
     return render(request, 'home.html')
 
+
 from .models import VehicleCategory
 from .models import Vehicle
 from django.db.models import Prefetch
