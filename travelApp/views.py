@@ -14,9 +14,11 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
+from ratelimit.decorators import ratelimit
 import traceback
 
 
+@ratelimit(key='ip', rate='5/h', method='POST', block=True)
 @csrf_protect
 def home(request):
     if request.method == "POST":
