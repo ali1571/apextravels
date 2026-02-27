@@ -14,15 +14,21 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
-from ratelimit.decorators import ratelimit
 import traceback
 import html
+from django.core.cache import cache
 
 
-@ratelimit(key='ip', rate='5/h', method='POST', block=True)
 @csrf_protect
 def home(request):
     if request.method == "POST":
+        ip = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[0].strip()
+        cache_key = f'quote_rate_{ip}'
+        request_count = cache.get(cache_key, 0)
+        if request_count >= 5:
+            messages.error(request, 'Too many requests. Please wait an hour before trying again.')
+            return render(request, 'home.html')
+        cache.set(cache_key, request_count + 1, timeout=3600)
         try:
             # Capture form data
             data = {
