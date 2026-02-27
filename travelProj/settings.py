@@ -27,9 +27,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-CHANGE-THIS-IN-PRODUCTION')
 
-DEBUG = True
-
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 
 #ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
@@ -38,12 +37,8 @@ ALLOWED_HOSTS = [
     "apextravels-production.up.railway.app",
     "www.apextourtravel.com",
     "apextourtravel.com",
-    'https://www.apextourtravel.com',
-    'https://apextourtravel.com',
     '127.0.0.1',
     'localhost',
-    'http://127.0.0.1:8000/',
-    
 ]
 
 # Make sure these are set correctly
