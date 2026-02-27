@@ -16,6 +16,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
 from ratelimit.decorators import ratelimit
 import traceback
+import html
 
 
 @ratelimit(key='ip', rate='5/h', method='POST', block=True)
@@ -51,6 +52,9 @@ def home(request):
                 print("❌ ERROR: No email provided")
                 return JsonResponse({'error': 'Email is required'}, status=400)
 
+            # Escape all user input before inserting into HTML
+            safe = {k: html.escape(v) for k, v in data.items()}
+
             # Create HTML email content
             html_content = f"""
             <!DOCTYPE html>
@@ -71,15 +75,15 @@ def home(request):
                         <h2>🚗 New Quote Request</h2>
                     </div>
                     <div class="content">
-                        <div class="row"><span class="label">👤 Name:</span> {data['name']}</div>
-                        <div class="row"><span class="label">📱 Phone:</span> {data['phone']}</div>
-                        <div class="row"><span class="label">📧 Email:</span> {data['email']}</div>
-                        <div class="row"><span class="label">📍 Pickup:</span> {data['pickup']}</div>
-                        <div class="row"><span class="label">📍 Drop-off:</span> {data['dropoff']}</div>
-                        <div class="row"><span class="label">👥 Passengers:</span> {data['passengers']}</div>
-                        <div class="row"><span class="label">📅 Date:</span> {data['date']}</div>
-                        <div class="row"><span class="label">🚗 Vehicle:</span> {data['vehicle_type']}</div>
-                        <div class="row"><span class="label">⏰ Hours:</span> {data['hours']}</div>
+                        <div class="row"><span class="label">👤 Name:</span> {safe['name']}</div>
+                        <div class="row"><span class="label">📱 Phone:</span> {safe['phone']}</div>
+                        <div class="row"><span class="label">📧 Email:</span> {safe['email']}</div>
+                        <div class="row"><span class="label">📍 Pickup:</span> {safe['pickup']}</div>
+                        <div class="row"><span class="label">📍 Drop-off:</span> {safe['dropoff']}</div>
+                        <div class="row"><span class="label">👥 Passengers:</span> {safe['passengers']}</div>
+                        <div class="row"><span class="label">📅 Date:</span> {safe['date']}</div>
+                        <div class="row"><span class="label">🚗 Vehicle:</span> {safe['vehicle_type']}</div>
+                        <div class="row"><span class="label">⏰ Hours:</span> {safe['hours']}</div>
                     </div>
                 </div>
             </body>
